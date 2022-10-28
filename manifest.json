@@ -1,0 +1,14 @@
+{
+    "name": "Ahmad Karam Ahmedoğlu",
+    "start_url": "index.html",
+    "display": "standalone",
+    "background_color": "white",
+    "theme-color": "wheat",
+    "icons": [
+      {
+        "src": "photo.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      }
+    ]
+  }
