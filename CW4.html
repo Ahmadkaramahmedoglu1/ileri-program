@@ -1,0 +1,132 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="icon" href="../images/icon192.png">
+    <title>Inspector </title>
+
+    <style>
+        body { max-width: 600px; }
+    </style>
+</head>
+
+<body>
+<p><b id="docName">Inspector V2.19</b> &nbsp;
+<a href="https://maeyler.github.io/JS/sss/">Read me</a> &nbsp;
+<a href="https://maeyler.github.io/JS/sss/Turkish">Turkish</a> &nbsp;
+<a href="Objects">Objects</a>
+</p>
+<div id="sss"><table class="inspector">
+  <tbody><tr>
+    <th><button onclick="previous();hideTip(this)">◀
+    <span class="tip1">Display previous object</span></button>
+    &nbsp; Objects &nbsp;
+    <button onclick="removeIt(event.ctrlKey);hideTip(this)">✘
+    <span class="tip1">Delete current object<br>
+        (&lt;CTRL&gt; deletes all)</span></button>
+    </th>
+    <th><button id="menu" onclick="display(MENU);hideTip(this)">M
+    <span class="tip1">Display Menu</span></button>
+    &nbsp; Properties
+    </th>
+  </tr>
+  <tr>
+    <td rowspan="3"><ul id="list1" onclick="doClick(event, this)" tabindex="0" onkeydown="doKey(event)"><li><b>Menu</b> Menu</li><li><b>Menu</b> Chap4</li><li><b>Menu</b> Chap6</li><li><b>Menu</b> Quiz</li><li style="color: white; background: blue;"><b>Menu</b> Async</li></ul></td>
+    <td><ul id="list2" onclick="doClick(event, this)"><li class="cfirst">Async<span class="tip2">Async<br>Menu<br>Object</span></li><li>window: <b>Window</b></li><li>navigator: <b>Navigator</b></li><li>clipboard: <b>Clipboard</b></li><li>geolocation: <b>Geoloca...</b></li><li>reader: <b>FileReader</b></li><li class="cname">Menu</li><li class="cname">Object</li></ul></td>
+  </tr>
+  <tr>
+    <th>Methods
+    <input id="sorted" type="checkbox" checked="true" onclick="display(_)">
+    <span id="small">sort</span>
+    </th>
+  </tr>
+  <tr>
+    <td><ul id="list3" onclick="doClick(event, this)"><li class="cfirst">Async<span class="tip2">Async<br>Menu<br>Object</span></li><li>displayFile</li><li>displayImage</li><li>displayText</li><li>isTextFile</li><li class="cname">Menu</li><li>allKeysIn</li><li>allValuesOf</li><li>deepEqual</li><li>toString</li><li class="cname">Object</li></ul></td>
+  </tr>
+  <tr>
+    <td colspan="2"><input id="inp" onkeyup="doEnter(event)">
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" id="out">[object Menu] Async — 5 properties and 8 methods</td>
+  </tr>
+  </tbody></table><dialog id="invokeDialog"><form method="dialog">
+  <p>
+    <label id="invokeLabel" for="invokeInput"></label><br>
+    <input id="invokeInput">
+  </p>
+  <p>
+    <span onclick="insertChars('_', 1)">_</span>
+    <span onclick="insertChars('${}', 2)">$</span>
+    <span onclick="insertChars('x => ', 5)"><i>f</i></span>
+     
+    <button id="invokeOK">OK</button>
+    <button value="cancel">Cancel</button>
+  </p>
+</form></dialog></div>
+<p><input type="file" multiple="" onchange="fileSelect(this)"></p>  
+<pre id="disp1">const L=console.log, T=800, D=display;<br>Callback:<br>setTimeout(L, T, 'L is a callback', 'T='+T)<br>navigator.geolocation.getCurrentPosition(L)<br>Promise:<br>navigator.getBattery().then(L)<br>navigator.clipboard.readText().catch(L)<br>fetch('https://ipinfo.io/json').then(L)</pre> <img id="disp2" src="">
+
+<p></p><p>pdf: 
+	<a href="CW4.pdf" target="NewTab">Solution</a>
+  </p>
+
+<link href="https://maeyler.github.io/JS/sss/inspector.css" rel="stylesheet">
+<script src="https://maeyler.github.io/JS/sss/inspector.js"></script>
+<script src="chap4.js"></script>
+<script src="chap6.js"></script>
+<script src="../exam/Quiz.js"></script>
+<script src="Async.js"></script>
+<script>
+"use strict";
+class Chap4 extends Menu {
+  constructor() {
+    super();
+    this.JOURNAL = JOURNAL;
+    this.EVENTS = EVENTS;
+  }
+  correlation(evt) { 
+    return phi(window.tableFor(evt)) 
+  }
+  analyze(val) {
+    return window.analyze(val)
+  }
+  tableFor(evt) {
+    return window.tableFor(evt)
+  }
+}
+
+var a, b, c, d, s;  //global variables
+const L=console.log, T=800, D=display;
+const TEXT = 
+`const L=console.log, T=800, D=display;
+Callback:
+setTimeout(L, T, 'L is a callback', 'T='+T)
+navigator.geolocation.getCurrentPosition(L)
+Promise:
+navigator.getBattery().then(L)
+navigator.clipboard.readText().catch(L)
+fetch('https://ipinfo.io/json').then(L)`
+function init() {
+    let len = 123, name = "Circle", pi = Math.PI
+    a = [0, 11, "22", "abc"]
+    c = {len, name, pi}
+    d = new Date()
+    s = "Small is beautiful"
+    let m = {a,c,d,s,window} //global
+    //make m a Menu instance
+    Object.setPrototypeOf(m, Menu.prototype)
+    display(m); 
+    display(new Chap4());
+    display(new Chap6());
+    display(new Quiz());
+    MENU = new Async(); //global
+    MENU.displayText(TEXT)
+    display(MENU); 
+}
+    docName.innerText = "Inspector "+VERSION;
+    try {
+        inspect(sss, init); //makes the table
+        inp.value = "new Date()";
+    } catch(e) {
+        reportError(e);
+    }
