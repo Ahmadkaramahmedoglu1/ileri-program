@@ -1,0 +1,82 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="shortcut icon" href="">
+  <style> /* CSS comment */
+    body { max-width: 440px; }
+    #url { width: 190px; }
+    span, #url { color: blue; }
+  </style>
+</head>
+
+<body>
+<h2> Battery Status </h2>
+<p id="status"></p>
+<h2> Online Status </h2>
+<p id="o_status">Online</p>
+<h2> Keyboard </h2>
+<p id="keyboard"></p>
+<hr>
+<b>Sample code</b>
+<pre id="sample">function init() {<br>    if(navigator.onLine)<br>        document.getElementById("o_status").innerHTML =<br>         'Online'<br>    else<br>        document.getElementById("o_status").innerHTML =<br>         'Offline'<br>    <br>    window.addEventListener("keydown", event =&gt; {<br>      if (!pressedKeys.includes(event.key))<br>        pressedKeys.push (event.key);<br>      <br>      document.getElementById("keyboard").innerHTML = pressedKeys.join(" ")<br>    })<br>    window.addEventListener("keyup", event =&gt; {<br>      if (pressedKeys.includes(event.key)){<br>         pressedKeys = pressedKeys.filter( e =&gt; e !== event.key );<br>         console.log(pressedKeys)<br>      }<br>      document.getElementById("keyboard").innerHTML = pressedKeys.join(" ")<br>    })<br>   <br>    navigator.getBattery().then(b =&gt;{<br>      let remaining = b.dischargingTime <br>      let level = 100*b.level+'%'<br>      let c = () =&gt; {<br>        if (b.charging)<br>            document.getElementById("status").innerHTML =<br>             'Charching... (' + level + ') Remaining: ' + remaining<br>        else<br>            document.getElementById("status").innerHTML  =<br>             'Discharching... (' + level + ')' <br>      }<br>      c()<br>    b.addEventListener('chargingchange', () =&gt; { <br>        c()<br>        }<br>    )<br>    <br>    b.addEventListener('levelchange',  () =&gt; {<br>      c()<br>      } <br>    ) <br>    }<br>    )<br>}</pre>
+
+<hr>
+<p></p><p>SS: 
+</p>
+<script>
+"use strict";
+// JavaScript comment
+let pressedKeys = []
+
+function init() {
+    if(navigator.onLine)
+        document.getElementById("o_status").innerHTML =
+         'Online'
+    else
+        document.getElementById("o_status").innerHTML =
+         'Offline'
+    
+    window.addEventListener("keydown", event => {
+      if (!pressedKeys.includes(event.key))
+        pressedKeys.push (event.key);
+      
+      document.getElementById("keyboard").innerHTML = pressedKeys.join(" ")
+    })
+    window.addEventListener("keyup", event => {
+      if (pressedKeys.includes(event.key)){
+         pressedKeys = pressedKeys.filter( e => e !== event.key );
+         console.log(pressedKeys)
+      }
+      document.getElementById("keyboard").innerHTML = pressedKeys.join(" ")
+    })
+   
+    navigator.getBattery().then(b =>{
+      let remaining = b.dischargingTime 
+      let level = 100*b.level+'%'
+      let c = () => {
+        if (b.charging)
+            document.getElementById("status").innerHTML =
+             'Charching... (' + level + ') Remaining: ' + remaining
+        else
+            document.getElementById("status").innerHTML  =
+             'Discharching... (' + level + ')' 
+      }
+      c()
+    b.addEventListener('chargingchange', () => { 
+        c()
+        }
+    )
+    
+    b.addEventListener('levelchange',  () => {
+      c()
+      } 
+    ) 
+    }
+    )
+}
+    sample.innerText = init
+    init();
+</script>
+
+
+</body>
