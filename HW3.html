@@ -39,10 +39,22 @@
  let right = true;
  
  let speed = 12; 
+
+ fetch(url)
+ .then(res=> res.blob())
+ .then(blob=>{
+ let ObjectURL=URL.createObjectURL(blob);
+ usablelmage=ObjectURL;
+ sprites.src=usablelmage;
+ });
  const output= document.getElementById("output");
  for(let i=1; i<8; i++){
     const img=document.createElement("img");
-    img.src=
+    img.src="https://github.io/Ahmadkaramahmedoglu2/ileri-program/blob/main/.github/sprites/Run1"(i++);
+    output.appendChild(img);
+
+    const br= document.createElement("br")
+    output.appendChild(br);
 
  }
  
@@ -52,8 +64,8 @@
  
  let ctx = canvas.getContext("2d");
  
- let character = new Image(); 
- character.src = "character.png";
+ //let character = new Image(); 
+ //character.src = "character.png";
  
  function updateFrame(){
  curFrame = ++curFrame % frameCount; 
@@ -72,7 +84,7 @@
  
  function draw(){
  updateFrame();
- ctx.drawImage(character,srcX,srcY,width,height,x,y,width,height);
+ ctx.drawImage(sprites,srcX,srcY,width,height,x,y,width,height);
  }
  
  
