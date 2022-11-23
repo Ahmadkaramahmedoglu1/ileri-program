@@ -8,7 +8,7 @@
  
  <canvas id='canvas'></canvas><br />
  <button onclick='play()'>Play</button>
- <button onclick='moveRight()'>Right</button>
+ <button onclick='reve()'>Reve</button>
  <button onclick='stop()'>Stop</button>
  <div id="output"></div>
  <script>
@@ -17,11 +17,12 @@
  
  let spriteWidth = 864; 
  let spriteHeight = 280; 
- 
+ let rows = 1;
  let cols = 8; 
  
- var trackRight = 0; 
- var trackLeft = 1; 
+ let trackReve = 0; 
+ let trackplay = 1; 
+ let trackstop=0;
  
  let width = spriteWidth/cols; 
  let height = spriteHeight/rows; 
@@ -35,8 +36,9 @@
  let srcX; 
  let srcY; 
  
- let left = false; 
- let right = true;
+ let play = false; 
+ let reve = true;
+ let stop =false;
  
  let speed = 12; 
 
@@ -47,10 +49,14 @@
  usablelmage=ObjectURL;
  sprites.src=usablelmage;
  });
+
+ let fetchedimage = [];
  const output= document.getElementById("output");
  for(let i=1; i<8; i++){
+    fetchedimage.push(ObjectURL);
     const img=document.createElement("img");
-    img.src="https://github.io/Ahmadkaramahmedoglu2/ileri-program/blob/main/.github/sprites/Run1"(i++);
+    img.src="https://github.io/Ahmadkaramahmedoglu1/ileri-program/blob/main/.github/sprites/Run1"(i++);
+    img.src=fetchedimage[i];
     output.appendChild(img);
 
     const br= document.createElement("br")
@@ -64,8 +70,8 @@
  
  let ctx = canvas.getContext("2d");
  
- //let character = new Image(); 
- //character.src = "character.png";
+ let character = new Image(); 
+ character1.src = "character1.png";
  
  function updateFrame(){
  curFrame = ++curFrame % frameCount; 
@@ -73,36 +79,40 @@
  ctx.clearRect(x,y,width,height); 
  
  if(left && x>0){
- srcY = trackLeft * height; 
+ srcY = trackplay * height; 
  x-=speed; 
  }
  if(right && x<canvasWidth-width){
- srcY = trackRight * height; 
+ srcY = trackreve * height; 
  x+=speed; 
+ }
+ if(stop && x<canvasWidth-width){
+ srcY = trackstop * height; 
+ x=stop; 
  }
  }
  
  function draw(){
  updateFrame();
- ctx.drawImage(sprites,srcX,srcY,width,height,x,y,width,height);
+ ctx.drawImage(character1,srcX,srcY,width,height,x,y,width,height);
  }
  
  
  function play(){
  play = true; 
- right = false
+ reve = false
  stop =true; 
  }
  
  function moveRight(){
- left = false;
- right = true; 
+ play = false;
+ reve = true; 
  stop =false; 
  }
  function stop(){
  stop = true;
- left = false; 
- right =false; 
+ play = false; 
+ reve =false; 
  }
  
  setInterval(draw,100);
