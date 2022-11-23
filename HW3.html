@@ -6,27 +6,24 @@
  </head>
  <body>
  
- <canvas id='canvas'></canvas><br />
- <button onclick='play()'>Play</button>
- <button onclick='reve()'>Reve</button>
- <button onclick='stop()'>Stop</button>
- <div id="output"></div>
+ <div id="output"> </div>
+ <button onclick='Start()'>Start</button>
+ <button onclick='Stop()'>Stop</button>
+ <button onclick='Pause()'>Pause</button>
+ <button onclick='Next()'>Next</button>
+ <button onclick='Prev()'>Prev</button>
+
+
  <script>
- let canvasWidth = 650; 
- let canvasHeight = 350;
- 
- let spriteWidth = 864; 
- let spriteHeight = 280; 
- let rows = 2;
- let cols = 8; 
- 
- let trackReve = 0; 
- let trackplay = 1; 
- let trackstop=0;
- 
- let width = spriteWidth/cols; 
- let height = spriteHeight/rows; 
- 
+ let Width = 650; 
+ let Height = 350;
+
+ let spriteWidth = 113; 
+ let spriteHeight = 128; 
+
+ let stop = 0; 
+ let start = 1; 
+
  let curFrame = 0; 
  let frameCount = 8; 
  
@@ -36,12 +33,11 @@
  let srcX; 
  let srcY; 
  
- let play = false; 
- let reve = true;
- let stop =false;
+ let left = false; 
+ let right = true;
  
  let speed = 12; 
-
+ 
  fetch(url)
  .then(res=> res.blob())
  .then(blob=>{
@@ -55,7 +51,7 @@
  for(let i=1; i<8; i++){
     fetchedimage.push(ObjectURL);
     const img=document.createElement("img");
-    img.src="https://github.io/Ahmadkaramahmedoglu1/ileri-program/blob/main/.github/sprites/Run1"(i++);
+    img.src="https://github.io/Ahmadkaramahmedoglu1/ileri-program/sprites/Run1.jpg"(i++);
     img.src=fetchedimage[i];
     output.appendChild(img);
 
@@ -63,15 +59,12 @@
     output.appendChild(br);
 
  }
+
+ let fetchedimage1 = document.getElementById('output');
+ output.width = Width;
+ output.height = Height; 
  
- let canvas = document.getElementById('canvas');
- canvas.width = canvasWidth;
- canvas.height = canvasHeight; 
- 
- let ctx = canvas.getContext("2d");
- 
- let character = new Image(); 
- character.src = "character1.png";
+ let ctx = output.getContext("2d");
  
  function updateFrame(){
  curFrame = ++curFrame % frameCount; 
@@ -79,40 +72,30 @@
  ctx.clearRect(x,y,width,height); 
  
  if(left && x>0){
- srcY = trackplay * height; 
+ srcY = start * height; 
  x-=speed; 
  }
- if(right && x<canvasWidth-width){
- srcY = trackreve * height; 
+ if(right && x<Width-width){
+ srcY = stop * height; 
  x+=speed; 
  }
- if(stop && x<canvasWidth-width){
- srcY = trackstop * height; 
- x=stop; 
- }
+
  }
  
  function draw(){
  updateFrame();
- ctx.drawImage(character1,srcX,srcY,width,height,x,y,width,height);
+ ctx.drawImage(sprites,srcX,srcY,width,height,x,y,width,height);
  }
  
  
- function play(){
- play = true; 
- reve = false
- stop =true; 
+ function Start(){
+ Start = true; 
+ Stop = false; 
  }
  
- function moveRight(){
- play = false;
- reve = true; 
- stop =false; 
- }
- function stop(){
- stop = true;
- play = false; 
- reve =false; 
+ function Stop(){
+ Stop = false;
+ Start = true; 
  }
  
  setInterval(draw,100);
@@ -120,4 +103,3 @@
  </script>
  </body>
 </html>
- 
