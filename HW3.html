@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+ 
+<html>
+ <head>
+ <title> Sprite Animation </title>
+ </head>
+ <body>
+ 
+ <canvas id='canvas'></canvas><br />
+ <button onclick='play()'>Play</button>
+ <button onclick='moveRight()'>Right</button>
+ <button onclick='stop()'>Stop</button>
+ <div id="output"></div>
+ <script>
+ let canvasWidth = 650; 
+ let canvasHeight = 350;
+ 
+ let spriteWidth = 864; 
+ let spriteHeight = 280; 
+ 
+ let cols = 8; 
+ 
+ var trackRight = 0; 
+ var trackLeft = 1; 
+ 
+ let width = spriteWidth/cols; 
+ let height = spriteHeight/rows; 
+ 
+ let curFrame = 0; 
+ let frameCount = 8; 
+ 
+ let x=0;
+ let y=200; 
+ 
+ let srcX; 
+ let srcY; 
+ 
+ let left = false; 
+ let right = true;
+ 
+ let speed = 12; 
+ const output= document.getElementById("output");
+ for(let i=1; i<8; i++){
+    const img=document.createElement("img");
+    img.src=
+
+ }
+ 
+ let canvas = document.getElementById('canvas');
+ canvas.width = canvasWidth;
+ canvas.height = canvasHeight; 
+ 
+ let ctx = canvas.getContext("2d");
+ 
+ let character = new Image(); 
+ character.src = "character.png";
+ 
+ function updateFrame(){
+ curFrame = ++curFrame % frameCount; 
+ srcX = curFrame * width; 
+ ctx.clearRect(x,y,width,height); 
+ 
+ if(left && x>0){
+ srcY = trackLeft * height; 
+ x-=speed; 
+ }
+ if(right && x<canvasWidth-width){
+ srcY = trackRight * height; 
+ x+=speed; 
+ }
+ }
+ 
+ function draw(){
+ updateFrame();
+ ctx.drawImage(character,srcX,srcY,width,height,x,y,width,height);
+ }
+ 
+ 
+ function play(){
+ play = true; 
+ right = false
+ stop =true; 
+ }
+ 
+ function moveRight(){
+ left = false;
+ right = true; 
+ stop =false; 
+ }
+ function stop(){
+ stop = true;
+ left = false; 
+ right =false; 
+ }
+ 
+ setInterval(draw,100);
+ 
+ </script>
+ </body>
+</html>
+ 
