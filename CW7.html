@@ -1,0 +1,94 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>GitHub Users</title>
+    <style>
+      body {
+          max-width: 440px;
+      }
+      img {
+          padding-right: 10px; 
+          width: 200px;
+          
+      }
+      pre { overflow-x: auto; }
+      #out { color: blue; }
+    </style>
+  </head>
+  
+  <body>
+  
+  <h2 id="title">GitHub Users</h2>
+  <input type="text" id="usr" value="ahmadkaramahmedoglu1" onchange="readUser()">
+  <p id="out" style="color: red;">Rate limit exceeded</p>
+  <b id="nameF">Reading data</b>
+  <p id="usrF">Reading data</p>
+  <p id="locF">Location : </p>
+  <p id="gitF">Main Page : </p>
+  <b>Sample code</b>
+  <hr>
+  <pre id="sample">async function toJSON(url) {<br>  try {<br>    let r = await fetch(url)<br>    if (!r.ok) throw cause(r.status)<br>    return r.json()<br>  } catch (e) {<br>    error(e)<br>  }<br>}<br>async function readUser() {<br>    const URL = "https://api.github.com/users/"<br>    const BR = '&lt;BR&gt;'<br>    let u = await toJSON(URL+usr.value)<br>    if (!u || !u.login) return<br>    out.style.color = ''<br>    //start with avatar<br>    out.innerHTML = `&lt;img src="${u.avatar_url}"&gt;`<br>    //add name <br>    let s = u.name<br>    nameF.innerHTML = s; console.log(s)<br>    // add usr<br>    let us = u.login<br>    if(us !=null){<br>      usrF.innerHTML = us<br>    }else usrF.innerHTML = ""<br>    usrF.style.color='grey'<br>    //add link to GitHub <br>    let h = "github.com/"+u.login<br>    gitF.innerHTML = "Main Page : " +<br>    `&lt;a href="https://${h}" target=NewTab&gt;${h}&lt;/a&gt;`<br>    // add location<br>    let l = u.location<br>    if(l!=null){<br>    locF.innerHTML = "Location : "+l<br>    }else locF.innerHTML = "Location : unspecified"<br>    //add mail<br>    let m = u.mail<br>    if(m!=null){<br>    mailF.innerHTML = "Mail : "+m<br>    }else mailF.innerHTML = "Mail : unspecified" <br>    let c = u.company<br>    if(c!=null){<br>    orgF.innerHTML = "Organization :"+c<br>    }else orgF.innerHTML = "Organization : unspecified" <br>}</pre>
+
+  
+  <script>
+  "use strict";
+  function error(e) {
+      out.innerText = e
+      out.style.color = 'red'
+      console.error(e)
+  }
+  function cause(s) {
+    switch (s) {
+      case 403:
+        return 'Rate limit exceeded'
+      case 404:
+        return usr.value+' not found'
+      default:
+        return 'Status '+s
+    }
+  }
+  async function toJSON(url) {
+    try {
+      let r = await fetch(url)
+      if (!r.ok) throw cause(r.status)
+      return r.json()
+    } catch (e) {
+      error(e)
+    }
+  }
+  async function readUser() {
+      const URL = "https://api.github.com/users/"
+      const BR = '<BR>'
+      let u = await toJSON(URL+usr.value)
+      if (!u || !u.login) return
+      out.style.color = ''
+      //start with avatar
+      out.innerHTML = `<img src="${u.avatar_url}">`
+      //add name 
+      let s = u.name
+      nameF.innerHTML = s; console.log(s)
+      // add usr
+      let us = u.login
+      if(us !=null){
+        usrF.innerHTML = us
+      }else usrF.innerHTML = ""
+      usrF.style.color='grey'
+      //add link to GitHub 
+      let h = "github.com/"+u.login
+      gitF.innerHTML = "Main Page : " +
+      `<a href="https://${h}" target=NewTab>${h}</a>`
+      // add location
+      let l = u.location
+      if(l!=null){
+      locF.innerHTML = "Location : "+l
+      }else locF.innerHTML = "Location : unspecified"
+      
+  }
+      title.innerText = document.title
+      sample.innerText = toJSON +'\n'+ readUser
+      readUser()
+  </script>
+  
+  
+  
+  </body>
