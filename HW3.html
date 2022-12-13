@@ -1,0 +1,103 @@
+<html>
+ <head>
+ <title> Sprite Animation </title>
+ </head>
+ <body>
+ 
+ <div id="output"> </div>
+ <button onclick='Start()'>Start</button>
+ <button onclick='Stop()'>Stop</button>
+ <button onclick='Pause()'>Pause</button>
+ <button onclick='Next()'>Next</button>
+ <button onclick='Prev()'>Prev</button>
+
+
+ <script>
+ let Width = 650; 
+ let Height = 350;
+
+ let spriteWidth = 113; 
+ let spriteHeight = 128; 
+
+ let stop = 0; 
+ let start = 1; 
+
+ let curFrame = 0; 
+ let frameCount = 8; 
+ 
+ let x=0;
+ let y=200; 
+ 
+ let srcX; 
+ let srcY; 
+ 
+ let left = false; 
+ let right = true;
+ 
+ let speed = 12; 
+ 
+ fetch(url)
+ .then(res=> res.blob())
+ .then(blob=>{
+ let ObjectURL=URL.createObjectURL(blob);
+ usablelmage=ObjectURL;
+ sprites.src=usablelmage;
+ });
+
+ let fetchedimage = [];
+ const output= document.getElementById("output");
+ for(let i=1; i<8; i++){
+    fetchedimage.push(ObjectURL);
+    const img=document.createElement("img");
+    img.src="https://github.io/Ahmadkaramahmedoglu1/ileri-program/sprites/Run1.jpg"(i++);
+    img.src=fetchedimage[i];
+    output.appendChild(img);
+
+    const br= document.createElement("br")
+    output.appendChild(br);
+
+ }
+
+ let fetchedimage1 = document.getElementById('output');
+ output.width = Width;
+ output.height = Height; 
+ 
+ let ctx = output.getContext("2d");
+ 
+ function updateFrame(){
+ curFrame = ++curFrame % frameCount; 
+ srcX = curFrame * width; 
+ ctx.clearRect(x,y,width,height); 
+ 
+ if(left && x>0){
+ srcY = start * height; 
+ x-=speed; 
+ }
+ if(right && x<Width-width){
+ srcY = stop * height; 
+ x+=speed; 
+ }
+
+ }
+ 
+ function draw(){
+ updateFrame();
+ ctx.drawImage(sprites,srcX,srcY,width,height,x,y,width,height);
+ }
+ 
+ 
+ function Start(){
+ Start = true; 
+ Stop = false; 
+ }
+ 
+ function Stop(){
+ Stop = false;
+ Start = true; 
+ }
+ 
+ setInterval(draw,100);
+ 
+ </script>
+ </body>
+</html>

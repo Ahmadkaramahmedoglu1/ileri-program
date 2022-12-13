@@ -1,0 +1,165 @@
+<html>
+ <head>
+ <title></title>
+ 
+ </head>
+ <body>
+   
+
+ <canvas id='output'></canvas><br />
+ <button onclick='moveLeft()'>Left</button>
+ <button onclick='moveRight()'>play</button>
+ <button onclick='Stop()'>stop</button>
+ <button onclick='Play()'>ref</button>
+
+
+ <script>
+ let canvasWidth = 650; 
+ let canvasHeight = 350;
+ 
+ let spriteWidth = 864; 
+ let spriteHeight = 280; 
+ 
+ let rows = 2; 
+ let cols = 8; 
+ 
+ let trackRight = 0; 
+ let trackLeft = 1; 
+ let tracstop= 0;
+ let tracplay=0;
+ 
+ let width = spriteWidth/cols; 
+ let height = spriteHeight/rows; 
+ 
+ let curFrame = 0; 
+ let frameCount = 8; 
+ 
+ let x=0;
+ let y=200; 
+ 
+ let srcX; 
+ let srcY; 
+ 
+ let left = false; 
+ let right = true;
+ let stop = true;
+ let play = false;
+ 
+ let speed = 12; 
+ //fetch kodu çalışmadı benim hatam bulmadı bu yüzden tek fotoğraf çalıştım 
+
+ /*fetch(url)
+ .then(res=> res.blob())
+ .then(blob=>{
+ let ObjectURL=URL.createObjectURL(blob);
+ usablelmage=ObjectURL;
+ sprites.src=usablelmage;
+ });
+
+ let fetchedimage = [];
+ const output= document.getElementById("output");
+ for(let i=1; i<8; i++){
+    fetchedimage.push(ObjectURL);
+    const img=document.createElement("img");
+    img.src="https://github.io/Ahmadkaramahmedoglu1/ileri-program/sprites/Run1.jpg"(i++);
+    img.src=fetchedimage[i];
+    output.appendChild(img);
+
+    const br= document.createElement("br")
+    output.appendChild(br);
+
+ }
+
+ let fetchedimage1 = document.getElementById('output');
+ output.width = Width;
+ output.height = Height; 
+ 
+ let ctx = output.getContext("2d");*/
+ 
+ let canvas = document.getElementById('output');
+ canvas.width = canvasWidth;
+ canvas.height = canvasHeight; 
+ 
+ let ctx = canvas.getContext("2d");
+ 
+ let character = new Image(); 
+ character.src = "character.png";
+
+ function displayLoading() {
+    loader.classList.add('output');
+    
+    setTimeout(() => {
+        loader.classList.remove('output');
+    }, 500);
+}
+
+// hiding loading 
+function hideLoading() {
+    loader.classList.remove('output');
+}
+ 
+ function updateFrame(){
+ curFrame = ++curFrame % frameCount; 
+ srcX = curFrame * width; 
+ ctx.clearRect(x,y,width,height); 
+ 
+ if(left && x>0){
+ srcY = trackLeft * height; 
+ x-=speed; 
+ }
+ if(right && x<canvasWidth-width){
+ srcY = trackRight * height; 
+ x+=speed; 
+ }
+
+ if(stop && x==0){
+ srcY = tracstop * height; 
+ x=0; 
+ }
+ if(play && x>canvasWidth-width && x>0){
+ srcY = tracplay * height; 
+ x=speed; 
+ }
+
+ }
+ 
+ function draw(){
+ updateFrame();
+ ctx.drawImage(character,srcX,srcY,width,height,x,y,width,height);
+ }
+ 
+ 
+ function moveLeft(){
+ left = true; 
+ right = false; 
+ stop = false; 
+ play = false;
+ }
+ 
+ function moveRight(){
+ left = false;
+ right = true; 
+ stop = false; 
+ play = false;
+ }
+
+ function Stop(){
+ left = false;
+ right = false
+ stop = true; 
+ play = false;
+ }
+
+ function Play(){
+
+ left = false;
+ right = false;
+ stop = false; 
+ play = true;
+ }
+ 
+ setInterval(draw,50);
+ 
+ </script>
+ </body>
+</html>
