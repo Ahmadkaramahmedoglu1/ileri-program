@@ -160,7 +160,9 @@ class Graph extends Menu {
     }
     this.context.putImageData(id, 0, 0);
   }
-
+  getPixelAt(x, y) {
+    return this.context.getImageData(x, y, 1, 1).data;
+  }
     flipHorizontal(){
     console.log(counter);
     cx.translate(img.width,0);
@@ -178,15 +180,13 @@ class Graph extends Menu {
   
   
 }
-  getPixelAt(x, y) {
-    return this.context.getImageData(x, y, 1, 1).data;
-  }
+
 }
 
 function init() {
     MENU = new Graph(); //global
     display(MENU); display(cx); display(img);
-    MENU.loadImage("b.jpg")
+    MENU.loadImage("https://raw.githubusercontent.com/Ahmadkaramahmedoglu1/ileri-program/main/b.jpg")
 }
     canvas.addEventListener('mousemove', pick);
     try {
