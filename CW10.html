@@ -1,21 +1,27 @@
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width">
-    <link href="https://maeyler.github.io/JS/sss/inspector.css" rel="stylesheet" media="all">
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link
+      href="https://maeyler.github.io/JS/sss/inspector.css"
+      rel="stylesheet"
+      media="all"
+    />
     <script src="https://maeyler.github.io/JS/sss/inspector.js"></script>
-    <title>Image Inspector </title>
+    <link rel="icon" href="../images/icon192.png" />
+    <title>Image Inspector</title>
 
-  <style>
-    body {
+    <style>
+      body {
         margin: 0;
-    }
-    p {
+      }
+      p {
         margin: 1em;
-    }
-    div {
+      }
+      div {
         display: inline-block;
-    }
-    #color {
+      }
+      #color {
         display: block;
         background: #bbb;
         font: 14px arial, sans-serif;
@@ -23,134 +29,104 @@
         padding: 16px;
         margin-bottom: 10px;
         min-width: 260px;
-    }
-  </style>
-</head>
+      }
+    </style>
+  </head>
 
-<body>
-<div>
-  <canvas id="canvas" width="460" height="460"></canvas>
-  <span id="color">{x,y} {R,G,B}</span>
-</div>
-<div>
-  <div id="sss"><table class="inspector">
-  <tbody><tr>
-    <th><button onclick="previous();hideTip(this)">◀
-    <span class="tip1">Display previous object</span></button>
-    &nbsp; Objects &nbsp;
-    <button onclick="removeIt(event.ctrlKey);hideTip(this)">✘
-    <span class="tip1">Delete current object<br>
-        (&lt;CTRL&gt; deletes all)</span></button>
-    </th>
-    <th><button id="menu" onclick="display(MENU);hideTip(this)">M
-    <span class="tip1">Display Menu</span></button>
-    &nbsp; Properties
-    </th>
-  </tr>
-  <tr>
-    <td rowspan="3"><ul id="list1" onclick="doClick(event, this)" tabindex="0" onkeydown="doKey(event)"><li style="color: white; background: blue;"><b>Menu</b> Graph</li><li><b>CanvasRenderingContext2D</b></li><li><b>HTMLImageElement</b></li></ul></td>
-    <td><ul id="list2" onclick="doClick(event, this)"><li class="cfirst">Graph<span class="tip2">Graph<br>Menu<br>Object</span></li><li>canvas: <b>HTMLCanvasElement</b></li><li>context: <b>CanvasRenderingContext2D</b></li><li>image: <b>HTMLImageElement</b></li><li>W: 460</li><li>H: 460</li><li class="cname">Menu</li><li class="cname">Object</li></ul></td>
-  </tr>
-  <tr>
-    <th>Methods
-    <input id="sorted" type="checkbox" checked="true" onclick="display(_)">
-    <span id="small">sort</span>
-    </th>
-  </tr>
-  <tr>
-    <td><ul id="list3" onclick="doClick(event, this)"><li class="cfirst">Graph<span class="tip2">Graph<br>Menu<br>Object</span></li><li>flipHorizontal</li><li>getPixelAt</li><li>grayscale</li><li>invert</li><li>loadImage</li><li class="cname">Menu</li><li>allKeysIn</li><li>allValuesOf</li><li>deepEqual</li><li>toString</li><li class="cname">Object</li></ul></td>
-  </tr>
-  <tr>
-    <td colspan="2"><input id="inp" type="search" onkeyup="doEnter(event)">
-    </td>
-  </tr>
-  <tr>
-    <td colspan="2" id="out">[object Menu] Graph — 5 properties and 9 methods</td>
-  </tr>
-  </tbody></table><dialog id="invokeDialog"><form method="dialog">
-  <p>
-    <label id="invokeLabel" for="invokeInput"></label><br>
-    <input id="invokeInput">
-  </p>
-  <p>
-    <span onclick="insertChars('_', 1)">_</span>
-    <span onclick="insertChars('${}', 2)">$</span>
-    <span onclick="insertChars('x => ', 5)"><i>f</i></span>
-     
-    <button id="invokeOK">OK</button>
-    <button value="cancel">Cancel</button>
-  </p>
-</form></dialog></div>
-<p>Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Pixel_manipulation_with_canvas" target="NewTab">Pixel manipulation</a>
-</p>
-</div>
+  <body>
+    <div>
+      <canvas id="canvas" width="460" height="460"></canvas>
+      <span id="color" style="background: rgb(49, 68, 38); color: white"
+        >{x:458, y:151} rgb(49, 68, 38)</span
+      >
+    </div>
+    <div>
+      <div id="sss"></div>
+      <p>
+        Ref:
+        <a
+          href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Pixel_manipulation_with_canvas"
+          target="NewTab"
+          >Pixel manipulation</a
+        >
+      </p>
+    </div>
 
-<script>
-"use strict";
-var counter=0;
-const cx = canvas.getContext('2d');
-const img = new Image();
-img.style.display = 'none';
-img.crossOrigin = 'anonymous';
-img.onload = start;
+    <script>
+      "use strict";
+      const cx = canvas.getContext("2d");
+      const img = new Image();
+      img.style.display = "none";
+      img.crossOrigin = "anonymous";
+      img.onload = start;
+      function start() {
+        console.log(img.src, "loaded");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        cx.drawImage(img, 0, 0);
+        MENU.W = canvas.width;
+        MENU.H = canvas.height;
+        display(MENU);
+      }
+      function pick(evt) {
+        let x = evt.layerX,
+          y = evt.layerY;
+        let rgb, avg;
+        try {
+          let pixel = cx.getImageData(x, y, 1, 1);
+          let data = pixel.data;
+          rgb = "rgb(" + data[0] + ", " + data[1] + ", " + data[2] + ")";
+          avg = (data[0] + data[1] + data[2]) / 3;
+        } catch {
+          rgb = "gray";
+          avg = 127;
+        }
+        color.style.background = rgb;
+        color.style.color = avg < 127 ? "white" : "black";
+        if (rgb == "gray") rgb = "";
+        color.innerText = "{x:" + x + ", y:" + y + "}  " + rgb;
+      }
+      class Graph extends Menu {
+        constructor() {
+          super();
+          this.canvas = canvas;
+          this.context = cx;
+          this.image = img;
+          this.flipHor = this.flipHor.bind(this);
+        }
 
-function start() {
-  console.log(img.src, "loaded")
-  canvas.width = img.width
-  canvas.height = img.height
-  cx.drawImage(img, 0, 0)
-  MENU.W = canvas.width
-  MENU.H = canvas.height
-  display(MENU)
-}
-function pick(evt) {
-  let x = evt.layerX, y = evt.layerY;
-  let rgb, avg;
-  try {
-    let pixel = cx.getImageData(x, y, 1, 1);
-    let data = pixel.data;
-    rgb = 'rgb('+data[0]+', '+data[1]+', '+data[2]+')';
-    avg = (data[0]+data[1]+data[2])/3;
-  } catch {
-    rgb = 'gray'; avg = 127;
-  }
-  color.style.background = rgb;
-  color.style.color = avg < 127? "white" : "black";
-  if (rgb == 'gray') rgb = '';
-  color.innerText = '{x:'+x+', y:'+y+'}  '+rgb;
-}
-
-class Graph extends Menu {
-  constructor() {
-    super()
-    this.canvas = canvas
-    this.context = cx
-    this.image = img
-  }
-  loadImage(url) { img.src = url }
-  invert() {
-    let id = this.context.getImageData(0, 0, this.W, this.H);
-    let data = id.data;
-    for (let i = 0; i < data.length; i += 4) {
-      data[i]   = 255 - data[i];   // red
-      data[i+1] = 255 - data[i+1]; // green
-      data[i+2] = 255 - data[i+2]; // blue
-    }
-    this.context.putImageData(id, 0, 0);
-  }
-  grayscale() {
-    let id = this.context.getImageData(0, 0, this.W, this.H);
-    let data = id.data;
-    for (let i = 0; i < data.length; i += 4) {
-      var avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
-      data[i]   = avg; // red
-      data[i+1] = avg; // green
-      data[i+2] = avg; // blue
-    }
-    this.context.putImageData(id, 0, 0);
-  }
-
-  red_green() {
+        flipHor() {
+          let flipX = -1,
+            flipY = 1;
+          this.context.translate(flipX + this.W, flipY);
+          this.context.scale(flipX, flipY);
+          this.context.drawImage(this.image, 0, 0);
+        }
+        loadImage(url) {
+          img.src = url;
+        }
+        invert() {
+          let id = this.context.getImageData(0, 0, this.W, this.H);
+          let data = id.data;
+          for (let i = 0; i < data.length; i += 4) {
+            data[i] = 255 - data[i]; // red
+            data[i + 1] = 255 - data[i + 1]; // green
+            data[i + 2] = 255 - data[i + 2]; // blue
+          }
+          this.context.putImageData(id, 0, 0);
+        }
+        grayscale() {
+          let id = this.context.getImageData(0, 0, this.W, this.H);
+          let data = id.data;
+          for (let i = 0; i < data.length; i += 4) {
+            var avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+            data[i] = avg; // red
+            data[i + 1] = avg; // green
+            data[i + 2] = avg; // blue
+          }
+          this.context.putImageData(id, 0, 0);
+        }
+        red_green() {
     let id = this.context.getImageData(0, 0, this.W, this.H);
     let data = id.data;
     for (let i = 0; i < data.length; i += 4) {
@@ -163,42 +139,26 @@ class Graph extends Menu {
   getPixelAt(x, y) {
     return this.context.getImageData(x, y, 1, 1).data;
   }
-    flipHorizontal(){
-    console.log(counter);
-    cx.translate(img.width,0);
-    cx.scale(-1,1);
-    cx.drawImage(img,0,0);
-    counter++;
-    if(counter==2){
-    cx.translate(img.width,img.height);
-    cx.scale(-1,1);
-    cx.drawImage(img,0,0);
-
-      counter=0;
-    }
-
-  
-  
 }
+      
+      
 
-}
-
-function init() {
-    MENU = new Graph(); //global
-    display(MENU); display(cx); display(img);
-    MENU.loadImage("https://raw.githubusercontent.com/Ahmadkaramahmedoglu1/ileri-program/main/b.jpg")
-}
-    canvas.addEventListener('mousemove', pick);
-    try {
+      function init() {
+        MENU = new Graph(); //global
+        display(MENU);
+        display(cx);
+        display(img);
+        MENU.loadImage(
+          "https://raw.githubusercontent.com/Ahmadkaramahmedoglu1/ileri-program/main/b.jpg"
+        );
+      }
+      canvas.addEventListener("mousemove", pick);
+      try {
         inspect(sss, init); //makes Inspector table
         inp.value = "";
-    } catch(e) {
+      } catch (e) {
         reportError(e);
-    }
-</script>
-
-
-
-
-</body>
-
+      }
+    </script>
+  </body>
+</html>
