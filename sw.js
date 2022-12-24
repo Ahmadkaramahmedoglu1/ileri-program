@@ -1,7 +1,5 @@
  HEAD
-const CACHE ='JS_Class'
-const FILES = ['/JS', '/CW#1 -- Browser tools/a.html', '/JS/classwork_part2.html', '/JS', '/JS/cw4.html','/JS/CW5-CAL%C4%B0SMA/work/EloquentJS.html','/JS/CW6-File.html','/JS/cw7/CW7.html','/JS/cw8.html','/JS/CW9.html']
-
+const CACHE ='Project.html'
 function installCB(e) {
   e.waitUntil(
     caches.open(CACHE)
