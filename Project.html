@@ -95,17 +95,17 @@ input { width: 100px }
       while(true){
           rndList = []
           while(rndList.length < 9){
-            moveNum=0;
 
               var randomnumber = Math.ceil(Math.random()*9)-1
               //random indexof aynı gelmesin number olarak
               if(rndList.indexOf(randomnumber) > -1) continue;
               rndList[rndList.length] = randomnumber;
           }
+          moves.innerHTML = 0;
+
           if(yerlestir(rndList)){
               break;
           }
-          moves.innerHTML = 0;
       }
       for (i = 0; i < taslar.length; i++) 
       {
