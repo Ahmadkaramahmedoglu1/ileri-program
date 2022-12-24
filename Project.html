@@ -48,7 +48,10 @@ input { width: 100px }
   </div>
   <br>
   <button class="btn btn-default" style="width:200px; height:50px;font-size: 20px;color:#044875;" onclick="randomblock()">Mix</button>
-  
+  <div class="status-wrapper">
+    <h2 id='game_status'>Start moving Tile !</h2>
+    <h3 id='moves'>0</h3>
+</div>
   <br><br>
   </p><h5> 2022 Ahmad Karam Ahmedoglu</h5>
   </p><h5> Oyun hakkinda</h5>
@@ -92,6 +95,8 @@ input { width: 100px }
       while(true){
           rndList = []
           while(rndList.length < 9){
+            moveNum=0;
+
               var randomnumber = Math.ceil(Math.random()*9)-1
               //random indexof aynı gelmesin number olarak
               if(rndList.indexOf(randomnumber) > -1) continue;
@@ -100,6 +105,7 @@ input { width: 100px }
           if(yerlestir(rndList)){
               break;
           }
+          moves.innerHTML = 0;
       }
       for (i = 0; i < taslar.length; i++) 
       {
@@ -140,6 +146,11 @@ input { width: 100px }
       }
       return(false)
   }
+  // hamle sayıyor
+  function moveCounter() {
+	let moveNum = parseInt(moves.innerHTML);
+	moves.innerHTML = moveNum + 1;
+}
   
   
   function pushed(id)
@@ -147,6 +158,7 @@ input { width: 100px }
       var btn = document.getElementById(id);
       if (btn.firstChild.data!=" "){
           bosTasId = blockfind(" ") 
+          moveCounter();
           if(changing(id, bosTasId) == false) return;
           document.getElementById(bosTasId).firstChild.data = btn.firstChild.data;
           btn.firstChild.data = " "
@@ -178,6 +190,8 @@ input { width: 100px }
           if(element.innerText == (i+1).toString()) 
           {
               element.style.color="blue";
+              moveNum=0;
+
           }
          
       }
@@ -195,6 +209,7 @@ input { width: 100px }
          document.getElementById("b7").style.color=="red")
          {
           alert("Congratulations, you WIN the game");
+          
          }
   
   }
