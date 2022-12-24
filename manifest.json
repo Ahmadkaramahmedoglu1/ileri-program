@@ -6,9 +6,9 @@
     "theme-color": "wheat",
     "icons": [
       {
-        "src": "a.png",
+        "src": "a.jpg",
         "sizes": "192x192",
-        "type": "image/png"
+        "type": "image/jpg"
       }
     ]
   }
