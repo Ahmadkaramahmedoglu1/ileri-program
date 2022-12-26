@@ -1,41 +1,29 @@
-const cacheName = "app";
-const staticAssets = ["./", "./Project.html", ];
+const CACHE ='8 puzzle game'
+const FILES = ['./', './Project.html']
 
-self.addEventListener("install", async (e) => {
-  const cache = await caches.open(cacheName);
-  await cache.addAll(staticAssets);
-  return self.skipWaiting();
-});
-
-self.addEventListener("activate", (e) => {
-  self.clients.claim();
-});
-
-self.addEventListener("fetch", async (e) => {
-  const req = e.request;
-  const url = new URL(req.url);
-
-  if (url.origin === location.origin) {
-    e.respondWith(cacheFirst(req));
-  } else {
-    e.respondWith(networkAndCache(req));
-  }
-});
-
-async function cacheFirst(req) {
-  const cache = await caches.open(cacheName);
-  const cached = await cache.match(req);
-  return cached || fetch(req);
+function installCB(e) {
+  e.waitUntil(
+    caches.open(CACHE)
+    .then(cache => cache.addAll(FILES))
+    .catch(console.log)
+  )
 }
+self.addEventListener('install', installCB)
 
-async function networkAndCache(req) {
-  const cache = await caches.open(cacheName);
-  try {
-    const fresh = await fetch(req);
-    await cache.put(req, fresh.clone());
-    return fresh;
-  } catch (e) {
-    const cached = await cache.match(req);
-    return cached;
-  }
+function save(req, resp) {
+  return caches.open(CACHE)
+  .then(cache => {
+    cache.put(req, resp.clone());
+    return resp;
+  })
+  .catch(console.log)
 }
+function fetchCB(e) { //fetch first
+  let req = e.request
+  console.log('JS_Class', req.url);
+  e.respondWith(
+    fetch(req).then(r2 => save(req, r2))
+    .catch(() => { return caches.match(req).then(r1 => r1) })
+  )
+}
+self.addEventListener('fetch', fetchCB)
