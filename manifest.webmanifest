@@ -1,6 +1,6 @@
 {
     "name": "8 puzzle game",
-    "start_url": "./Project.html",
+    "start_url": "Project.html",
     "display": "standalone",
     "background_color": "white",
     "theme-color": "wheat",
