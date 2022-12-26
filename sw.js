@@ -20,7 +20,7 @@ function save(req, resp) {
 }
 function fetchCB(e) { //fetch first
   let req = e.request
-  console.log('JS_Class', req.url);
+  console.log('8 puzzle game', req.url);
   e.respondWith(
     fetch(req).then(r2 => save(req, r2))
     .catch(() => { return caches.match(req).then(r1 => r1) })
