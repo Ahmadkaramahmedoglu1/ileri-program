@@ -219,7 +219,16 @@ input { width: 100px }
   {
       alert("Congratulations, you WIN the game");
   }
-   navigator.serviceWorker.register('sw.js')
+  async function registerSW() {
+  if ("serviceWorker" in navigator) {
+    try {
+      await navigator.serviceWorker.register("./sw.js");
+    } catch (e) {
+      console.log(`SW registration failed`);
+    }
+  }
+}
+registerSW();
   </script>
   
   
